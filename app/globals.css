@@ -1,0 +1,274 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --app: #f4f5f8;
+  --surface: #ffffff;
+  --surface-2: #f0f2f6;
+  --line: #e2e5ec;
+  --ink: #0f172a;
+  --muted: #64748b;
+  --accent: #4f46e5;
+  --accent-ink: #ffffff;
+
+  --kind-root: #7c3aed;
+  --kind-rule: #2563eb;
+  --kind-condition: #0891b2;
+  --kind-action: #059669;
+
+  --sev-low: #64748b;
+  --sev-medium: #ca8a04;
+  --sev-high: #ea580c;
+  --sev-critical: #dc2626;
+
+  --ok: #16a34a;
+  --warn: #d97706;
+  --danger: #dc2626;
+
+  --shadow-card: 0 1px 2px rgb(15 23 42 / 0.06), 0 4px 14px rgb(15 23 42 / 0.06);
+  --shadow-pop: 0 10px 40px rgb(15 23 42 / 0.18);
+}
+
+.dark {
+  --app: #0a0d14;
+  --surface: #121722;
+  --surface-2: #1a2130;
+  --line: #273046;
+  --ink: #e7eaf1;
+  --muted: #8b96aa;
+  --accent: #818cf8;
+  --accent-ink: #0a0d14;
+
+  --kind-root: #a78bfa;
+  --kind-rule: #60a5fa;
+  --kind-condition: #22d3ee;
+  --kind-action: #34d399;
+
+  --sev-low: #94a3b8;
+  --sev-medium: #facc15;
+  --sev-high: #fb923c;
+  --sev-critical: #f87171;
+
+  --ok: #4ade80;
+  --warn: #fbbf24;
+  --danger: #f87171;
+
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 4px 18px rgb(0 0 0 / 0.35);
+  --shadow-pop: 0 10px 40px rgb(0 0 0 / 0.55);
+}
+
+@theme inline {
+  --color-app: var(--app);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-danger: var(--danger);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --shadow-card: var(--shadow-card);
+  --shadow-pop: var(--shadow-pop);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--app);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- React Flow theming ---------- */
+.react-flow {
+  --xy-background-color: transparent;
+  --xy-edge-stroke: color-mix(in srgb, var(--muted) 70%, transparent);
+  --xy-edge-stroke-selected: var(--accent);
+  --xy-connectionline-stroke: var(--accent);
+  --xy-minimap-background-color: var(--surface);
+  --xy-minimap-mask-background-color: color-mix(in srgb, var(--app) 70%, transparent);
+  --xy-controls-button-background-color: var(--surface);
+  --xy-controls-button-background-color-hover: var(--surface-2);
+  --xy-controls-button-color: var(--ink);
+  --xy-controls-button-color-hover: var(--ink);
+  --xy-controls-button-border-color: var(--line);
+  --xy-selection-background-color: color-mix(in srgb, var(--accent) 10%, transparent);
+  --xy-selection-border: 1px dashed var(--accent);
+  --xy-attribution-background-color: transparent;
+}
+
+.react-flow__attribution {
+  opacity: 0.55;
+}
+
+.react-flow__minimap {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.react-flow__controls {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
+}
+
+.react-flow__controls-button {
+  border-bottom: 1px solid var(--line);
+}
+
+.react-flow__controls-button svg {
+  fill: currentColor;
+}
+
+/* Handles: invisible until the node is hovered / connecting, so cards stay clean. */
+.policy-handle {
+  width: 12px;
+  height: 12px;
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  opacity: 0;
+  transition:
+    opacity 160ms ease,
+    transform 160ms var(--ease-out-expo);
+}
+
+.react-flow__node:hover .policy-handle,
+.react-flow__node.selected .policy-handle,
+.react-flow.connecting .policy-handle {
+  opacity: 1;
+}
+
+.policy-handle:hover {
+  transform: scale(1.3);
+}
+
+/* Smooth glide while auto-layout repositions nodes. */
+.react-flow.is-laying-out .react-flow__node {
+  transition: transform 520ms var(--ease-out-expo);
+}
+
+.react-flow.is-laying-out .react-flow__edge path {
+  transition: d 520ms var(--ease-out-expo);
+}
+
+@keyframes node-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.node-enter {
+  animation: node-in 260ms var(--ease-out-expo);
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(24px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-2);
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--ink) 7%, transparent), transparent);
+  animation: shimmer 1.4s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Slim scrollbars for side panels. */
+.thin-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+/* Palette drag hovering a node: it is about to become that node's child. */
+.react-flow__node[data-drop-target] > div > div:first-child {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+/* Keep the mini-map clear of the inspector slide-over on wider screens. */
+.react-flow__minimap {
+  transition: transform 260ms var(--ease-out-expo);
+}
+
+@media (min-width: 640px) {
+  .inspector-open .react-flow__minimap {
+    transform: translateX(-372px);
+  }
+}
+
+/* The mini-map would cover a phone-sized canvas. */
+@media (max-width: 639px) {
+  .react-flow__minimap {
+    display: none;
+  }
+}
